@@ -102,7 +102,7 @@ gtk.css. I followed
 [this link](http://blog.nabam.net/workstation/2017/09/15/terminator_tabs/) to
 customize mine. This is how my tabs look like now.
 
-<img src="images/terminator.png" width=50%>
+![](images/terminator.png)
 
 You can find my gtk.css over [here](config/gtk.css) if you like my style. Or
 you can also DIY it. I didn't know anything about GTK-3 or css, but it just
@@ -180,7 +180,7 @@ in' to `%USERPROFILE%` if you want to make your windows home folder the startup
 directory for WSL. (This is something you might want to change this option for
 you own need.) Then download a nice icon and use it for this shortcut.
 
-<img src="images/shortcut.png" width=30%>
+![](images/shortcut.png)
 
 You can find the icon I am using over [here](images/terminator.ico).
 
