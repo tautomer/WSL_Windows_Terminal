@@ -45,7 +45,8 @@ cd ..
 rm -rf fonts
 ```
 
-The quoted block is saved a script [install_powerline_fonts.sh](scripts/install_powerline_fonts.sh).
+The quoted block is from [this repo](https://github.com/powerline/fonts) and is
+saved a script [install_powerline_fonts.sh](scripts/install_powerline_fonts.sh).
 You can use this one or just run the command one by one.
 
 Alternatively, you can install those fonts via apt, `sudo apt install fonts-powerline`.
@@ -81,11 +82,11 @@ terminator window to set the 'Preferences'.
 
   * Turn off 'show titlebar' to get rid of the red bar on the top the window.
 
-  * You may want to choose your favorite color scheme or customize one in the
+  * You might want to choose your favorite color scheme or customize one in the
   'color' tab. I am using a modified one dark color scheme originated from
   [here](https://github.com/nathanbuchar/atom-one-dark-terminal).
 
-  * You may also want to change the the number of scrollback lines to a much
+  * You might also want to change the the number of scrollback lines to a much
   larger value in the 'scroll' tab.
 
 * In 'Keybindings' part, one thing I found that was useful is the 'switch to
@@ -95,7 +96,7 @@ I attached my personal config file in the config folder,
 [terminator_config](config/config), which is generally the same as what I write
 here.
 
-If you open another tab with 'shift + ctrl + t' shortcut, you may notice the
+If you open another tab with 'shift + ctrl + t' shortcut, you might notice the
 default style of the tab is super stupid. This is because terminator uses GTK-3
 and this is the default style of it. To change this, you need customize your
 gtk.css. I followed
@@ -107,6 +108,28 @@ customize mine. This is how my tabs look like now.
 You can find my gtk.css over [here](config/gtk.css) if you like my style. Or
 you can also DIY it. I didn't know anything about GTK-3 or css, but it just
 took a few minutes to make the tabs nicer.
+
+### If You Feel the Text Is Blurry
+
+If you are using a high DPI monitor, you might find that the text in terminator
+or other applications via X11 blurry.
+
+To solve this issue, find `vcxsrv.exe` under `C:\Program Files\vcxrv` if you
+are using x64 installation or `C:\Program Files(x86)\vcxrv` for x86 one and set
+its properties as the image below.
+
+![set vcxsrv properties](images/properties.png)
+
+This one essentially overrides the DPI scaling in your Windows setting, so you
+might want to increase the font size in terminator by the scaling factor in
+your windows setting. Say you were using 14 pt font with 150% scaling, not you
+are going to use 21 pt or so.
+
+Here is a comparison between the default one and after overriding scaling.
+
+Default                       |  Override
+:----------------------------:|:-----------------------------:
+![def](images/default.png)    |  ![over](images/override.png)
 
 ### Configure ZSH
 
@@ -133,7 +156,8 @@ think.
 ### Run Terminator from Windows Directly
 
 With the magic of VB script, we can actually launch terminator directly without
-touching WSL first. I followed the method in [this post](https://blog.ropnop.com/configuring-a-pretty-and-usable-terminal-emulator-for-wsl/) initially.
+touching WSL first. I followed the method in [this post](https://blog.ropnop.com/configuring-a-pretty-and-usable-terminal-emulator-for-wsl/)
+initially.
 
 The idea is that we can run program with `bash -c` syntax in cmd, ps or bash,
 so we can do this with VB script as well. Since terminator runs over x window,
