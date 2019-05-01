@@ -25,7 +25,7 @@ stream. Our next step is to install `zsh` and `.oh-my-zsh` to use `zsh` as the
 default shell.
 
 ```bash
-sudo apt install zsh curl
+sudo apt install zsh curl git
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
 
@@ -122,7 +122,7 @@ its properties as the image below.
 
 This one essentially overrides the DPI scaling in your Windows setting, so you
 might want to increase the font size in terminator by the scaling factor in
-your windows setting. Say you were using 14 pt font with 150% scaling, not you
+your windows setting. Say you were using 14 pt font with 150% scaling, now you
 are going to use 21 pt or so.
 
 Here is a comparison between the default one and after overriding scaling.
