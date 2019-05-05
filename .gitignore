@@ -1,3 +1,4 @@
 # exclude all junk files
 **/.DS_Store
 **/*.sw*
+.vscode

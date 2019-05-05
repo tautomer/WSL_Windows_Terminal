@@ -216,3 +216,169 @@ In fact you can use this way to launch other GUI programs from your WSL, like
 
 By now you will already have a basic setup for WSL and nicer terminal emulator
 than any windows one I tried.
+
+## Optional Configurations
+
+There is something we can do to make our Linux environment work better. They
+may not be useful to you, so I list them in 'optional' part. Here is the list.
+
+* [Get Correct Unix Permission for NTFS](###Get-Correct-Unix-Permission-for-NTFS)
+
+* [Configure OpenSSH Server on Windows](###Configure-OpenSSH-Server-on-Windows)
+
+* [Enable X11 Forwarding for SSH](###Enable-X11-Forwarding-for-SSH)
+
+* [Share .ssh Folder between Windows and WSL](###Share-.ssh-Folder-between-Windows-and-WSL)
+
+### Get Correct Unix Permission for NTFS
+
+Microsoft introduce a file called `wsl.conf` to auto configure WSL. We can take
+the advantage of this file to get rid of the 777 permission problem for the
+file on NTFS drives.
+
+Just create `/etc/wsl.conf` and add the following contents
+
+```config
+[automount]
+enabled = true
+options = metadata
+```
+
+save and then go to services in Windows to restart `lxssmanager` process.
+
+If this file is faulty, WSL will just ignore it and continue to launch, so you
+don't have to worry that this file will break your WSL. 
+
+### Configure OpenSSH Server on Windows
+
+When we enable developer mode, the OpenSSH client is already installed. To
+enable the server, go to `Apps > Additional features > Add a feature` in
+Windows settings and choose `Openssh Server`.
+
+Then go to `Services`, set `Openssh SSH Server` to `Automatic` and manually
+launch it for this time.
+![Services](images/services.png)
+
+Now we can already SSH/SCP to our Windows machine directly at port 22 (In
+principle you don't have to open this port in your firewall manually.), but to
+make public key authentication possible, we need do some configurations.
+
+First, we need configure `sshd_config` in `%programdata%\ssh`, i.e.,
+`C:\programdata\ssh`. **Note**: you need admin privilege to modify this file.
+Uncomment line
+
+```config
+PubkeyAuthentication yes
+```
+
+and comment out lines
+
+```config
+#Match Group administrators
+#       AuthorizedKeysFile __PROGRAMDATA__/ssh/administrators_authorized_keys
+```
+
+as we want to use the `authorized_keys` file in `%userprofile%\.ssh` folder.
+
+Then generate SSH keys. Open `cmd` or `PowerShell` window and type
+
+```bash
+ssh-keygen.exe -t rsa
+```
+
+to generate keys.
+
+**Next, we need create file `authorized_keys` and set the ACL permission.**
+**This step is very important.** Without correct ACL (not Unix) permission,
+public keys won't work. Open `Properties` for `authorized_keys` and go to
+`Security` tab click `Advanced`. **Disable 'inheritance'** and **delete all**
+**entries other than 'SYSTEM'**. Add an entries for our own account to have
+read and write permission, so that we can modify the file, but this entry must
+not have full control over the file. See photo below.
+![permission](images/permission.png)
+
+With this setup, you will be able to SSH into Windows without password if you
+add your public keys to `authorized_keys` file.
+
+One thing to note for SCP to Windows is that the path should be
+`windows_user@host:disk:/path`, e.g., `doe@localhost:c/Users`.
+
+### Enable X11 Forwarding for SSH
+
+Personally, I need visualize some data or figures on the remote host, so X11
+forwarding is very important to me. However, enabling this option in WSL is
+kind of ambiguous. I struggled several times and checked multiple sources, but
+I'm not sure which step is necessary. Nevertheless, this way indeed works.
+
+First of all, install OpenSSH server for WSL
+
+```bash
+sudo apt install ssh
+```
+
+and then modify `/etc/ssh/sshd_config` file like this block below, by either
+uncommenting or adding.
+
+```config
+Port 2222
+AddressFamily inet
+ListenAddress 0.0.0.0
+PermitRootLogin no
+AllowUsers your_user_id
+PubkeyAuthentication yes
+PasswordAuthentication yes
+X11Forwarding yes
+X11UseLocalhost no
+```
+
+Note that since I enabled OpenSSH server for windows, too and would like to
+keep default 22 port for it, the one for WSL is changed to 2222.
+
+Then run command
+
+```bash
+xauth add :0 . `mcookie`
+```
+
+to obtain correct authentication.
+
+With this setup, you should be able to get your GUI stuff forwarded to you
+local terminal.
+
+### Share .ssh Folder between Windows and WSL
+
+Now you have two SSH server running, one in Windows and one in WSL, so you
+might think of sharing the public key and authorized keys between them. It is
+indeed possible, but maybe keeping two sets of .ssh folders is better.
+
+You can find the refrence [here](https://florianbrinkmann.com/en/3436/ssh-key-and-the-windows-subsystem-for-linux/).
+
+First of all, make sure you enabled `metadata` for NTFS stuff like [this](###Get-Correct-Unix-Permission-for-NTFS),
+so that we can get the Unix style permission persistent for Windows files.
+
+Then create a symbolic link between the .ssh folder in your `%userprofile%` and
+your WSL `$HOME`.
+
+```bash
+ln -s /mnt/c/Users/windows_user/.ssh ~/.ssh
+```
+
+Set correct permission for files after that. They are like the following.
+
+```bash
+-rw-r--r-- 1 user user 1.6K Apr  9 13:22 authorized_keys
+-rw------- 1 user user 1.7K Apr  9 09:58 id_rsa
+-rw-r--r-- 1 user user  394 Apr  9 09:58 id_rsa.pub
+-rw------- 1 user user  11K May  5 00:14 known_hosts
+-rw------- 1 user user 1.4K Apr 18  2017 known_hosts.old
+```
+
+Finally, disable strict modes in your `sshd_config`. **Warning: this isn't a**
+**good practice, but I can't make it work without this.**
+
+```config
+StrictModes no
+```
+
+So now you can keep one copy of `id_rsa.pub` and `authorized_keys` for both
+Windows and your WSL.
