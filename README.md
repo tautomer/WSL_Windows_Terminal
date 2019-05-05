@@ -222,13 +222,13 @@ than any windows one I tried.
 There is something we can do to make our Linux environment work better. They
 may not be useful to you, so I list them in 'optional' part. Here is the list.
 
-* [Get Correct Unix Permission for NTFS](###Get-Correct-Unix-Permission-for-NTFS)
+* [Get Correct Unix Permission for NTFS](#Get-Correct-Unix-Permission-for-NTFS)
 
-* [Configure OpenSSH Server on Windows](###Configure-OpenSSH-Server-on-Windows)
+* [Configure OpenSSH Server on Windows](#Configure-OpenSSH-Server-on-Windows)
 
-* [Enable X11 Forwarding for SSH](###Enable-X11-Forwarding-for-SSH)
+* [Enable X11 Forwarding for SSH](#Enable-X11-Forwarding-for-SSH)
 
-* [Share .ssh Folder between Windows and WSL](###Share-.ssh-Folder-between-Windows-and-WSL)
+* [Share .ssh Folder between Windows and WSL](#Share-.ssh-Folder-between-Windows-and-WSL)
 
 ### Get Correct Unix Permission for NTFS
 
