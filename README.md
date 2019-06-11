@@ -206,7 +206,7 @@ you own need.) Then download a nice icon and use it for this shortcut.
 
 ![](images/shortcut.png)
 
-You can find the icon I am using over [here](images/terminator.ico).
+You can find the icon I am using over [here](https://raw.githubusercontent.com/tautomer/WSL_Terminator/master/images/terminal.ico).
 
 * Now you can use this shortcut to launch terminator. You can pin this shortcut
 to your start as well.
