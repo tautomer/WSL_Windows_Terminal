@@ -3,6 +3,40 @@
 Here I am going to explain how you can launch terminator directly from Windows
 as the terminal emulator for WSL with Debian or Ubuntu.
 
+## Update on June 13, 2019
+
+As of today, you can try [WSL 2](https://devblogs.microsoft.com/commandline/announcing-wsl-2/)
+out by enrolling in **Fast Ring** of the Windows Insider Program. This is
+[how to enroll in insider](https://insider.windows.com/en-us/getting-started/).
+Then update your Windows to build 18917. After that you are going to
+[follow this link](https://docs.microsoft.com/en-us/windows/wsl/wsl2-install)
+to convert your old WSL 1 installation to WSL 2.
+
+MS claimed some huge I/O improvements over WSL 1, which is something I have
+been following in the past month, and here is a simple benchmark via [fs_mark](https://github.com/josefbacik/fs_mark)
+by Josef Bacik.
+
+### WSL 2 (1000 1MB files written)
+
+| FSUse% | Count | Size | Files/sec | App Overhead |
+|:------:|:-----:|:----:|:---------:|:------------:|
+|    6   |  1000 | 1024 |   1001.1  |     10979    |
+
+### WSL 1 (1000 1MB files written)
+
+| FSUse% | Count | Size | Files/sec | App Overhead |
+|:------:|:-----:|:----:|:---------:|:------------:|
+|   33   |  1000 | 1024 |   650.6   |     23895    |
+
+So there is about 2 times improvement from the writing side. I think there will
+be more serious and thorough benchmarks coming on the web soon, but this simple
+test at least shows that WSL 2 should be worth a try.
+
+**Note:** Per [this issue](https://github.com/microsoft/WSL/issues/4106), you
+will need to specify the IP address of the host for your X11 applications.
+Simply take the ip from `/etc/resolv.conf`. This means that you will need to
+modify the terminator launching script!!
+
 ## Step-by-step Setup
 
 First of all, you should enable WSL like [this](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
@@ -194,6 +228,10 @@ Save this file as [terminator.vbs](scripts/terminator.vbs). You can simply
 double click the .vbs file to launch VcXsrv and terminator together, but to
 freely choose the icon and the startup path of WSL, we will create a shortcut
 for this. Here is how.
+
+**Note:** As I wrote in the beginning of the document, for WSL 2, at present,
+change `DISPLAY=:0` to `DISPLAY=ip:0`, where the IP will be something in your
+`/etc/resolv.conf`.
 
 * Right click somewhere to create a shortcut. Just link to any arbitrary thing,
 as we are going to change it anyway.
