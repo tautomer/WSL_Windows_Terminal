@@ -37,6 +37,8 @@ out and now I think we don't have to use terminator any more.
 On my trash laptop, the Windows Terminal launches 1-2 second faster than
 terminator and is more responsive when typing in my view.
 
+Check [this part](#use-windows-terminal) for some set up guide.
+
 ## WSL 2
 
 This section was updated on Jun. 13, 2019.
