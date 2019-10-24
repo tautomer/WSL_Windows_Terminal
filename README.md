@@ -182,8 +182,10 @@ need powerline fonts, customized color scheme, etc, do the part.
   family directly crash the terminal and some fonts like Meslo do nothing and
   the terminal fall back to the default.
 
-  As I tested, Menlo and Ubuntu Mono Nerd font work. Change the `fontFace` in
-  the profile part. You might want to change the `fontSize` as well.
+  As I tested, Menlo and Ubuntu Mono Nerd font work. Install
+  [Menlo for Powerline](https://github.com/abertsch/Menlo-for-Powerline/blob/master/Menlo%20for%20Powerline.ttf)
+  on Windows. Change the `fontFace` in the profile part. You might want to
+  change the `fontSize` as well.
 
   ```json
   "fontFace" : "Menlo for Powerline",
@@ -268,7 +270,13 @@ Now if you type
 DISPLAY=:0.0 terminator
 ```
 
-you should be able to see the terminator window pops up.
+You should be able to see the terminator window pops up.
+
+For WSL 2 the line should be the IP address in `/etc/resolv.conf`.
+
+```bash
+DISPLAY=$(cat /etc/resolv.conf | grep name | cut -d' ' -f2):0.0 terminator
+```
 
 ##### Configure Terminator
 
@@ -405,7 +413,7 @@ than any windows one I tried.
 ###### For WSL 2
 
 **Note:** As I wrote in the beginning of the document, for WSL 2, at present,
-change `DISPLAY=:0` to `DISPLAY=ip:0`, where the IP will be something in your
+change `DISPLAY=:0` to `DISPLAY=IP:0`, where the IP will be something in your
 `/etc/resolv.conf`.
 
 Alternatively, the smart way will be replace the args in the .vbs script
@@ -478,6 +486,9 @@ the `&` as-is and run it without using the shell, so the first part of this
 command will only use WSL to run a Windows command to launch a Windows program
 and the second part will actually launch WSL. I know this one looks completely
 dumb, but this is the only way I found the actually fulfill the job.
+
+Alternatively, you can run the VB script in your dot files, though I haven't
+tested this way myself.
 
 ### Get Correct Unix Permission for NTFS
 
