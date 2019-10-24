@@ -7,8 +7,10 @@
   - [WSL 2 (1000 1MB files written)](#wsl-2-1000-1mb-files-written)
   - [WSL 1 (1000 1MB files written)](#wsl-1-1000-1mb-files-written)
 - [Step-by-step Setup](#step-by-step-setup)
-  - [Install Necessary Packages](#install-necessary-packages)
-  - [Install Powerline Fonts](#install-powerline-fonts)
+  - [Install ZSH](#install-zsh)
+  - [Install Fonts](#install-fonts)
+    - [For Terminator](#for-terminator)
+    - [For Windows Terminal](#for-windows-terminal)
   - [Configure ZSH](#configure-zsh)
   - [Configure A Terminal Emulator](#configure-a-terminal-emulator)
     - [Use Windows Terminal](#use-windows-terminal)
@@ -80,7 +82,7 @@ modify the terminator launching script!! Check [this part](#for-wsl-2) out.
 First of all, you should enable WSL like [this](https://docs.microsoft.com/en-us/windows/wsl/install-win10).
 Set up your username and password.
 
-### Install Necessary Packages
+### Install ZSH
 
 I know zsh and oh-my-zsh aren't that good in many ways, but I still follows the
 stream.
@@ -95,7 +97,15 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 Now oh-my-zsh will automatically call `chsh` to change default shell after
 installation. We will come back to zsh configurations later.
 
-### Install Powerline Fonts
+### Install Fonts
+
+If you use some fancy themes for zsh, you will need install some fonts, like
+powerline fonts or nerd fonts. If you use terminator, you need install the
+fonts in your WSL. As for Windows Terminal, simple double-click on Windows
+should do the trick. Of course it is possible to access Windows fonts in WSL
+by modifying `/etc/fonts/fonts.conf`, but I am not going to touch this part.
+
+#### For Terminator
 
 ```bash
 # clone
@@ -114,12 +124,16 @@ You can use this one or just run the command one by one.
 
 Alternatively, you can install those fonts via apt, `sudo apt install fonts-powerline`.
 
+#### For Windows Terminal
+
+Please refer to [this section of the document](#use-windows-terminal).
+
 ### Configure ZSH
 
 You can configure zsh as your wish, but there is something worth mentioning I
 think.
 
-* A `ls` function from [this gist](https://gist.github.com/notlaforge/f05bdb9540308a63de90f5f3d69ced95).
+- A `ls` function from [this gist](https://gist.github.com/notlaforge/f05bdb9540308a63de90f5f3d69ced95).
 
   ```bash
   ls() {
@@ -135,6 +149,15 @@ think.
 
   This will get rid of annoying NTUSER.DAT*, *.ini, Thumbs.db and windows
   symbolic links that are not accessible by WSL.
+
+- **DO NOT USE AGNOSTER**
+
+  [agnoster theme](https://github.com/agnoster/agnoster-zsh-theme) is probably
+  one of the most popular zsh theme, but it is slow as hell. (In a git repo,
+  the prompt may take 1-2 second to show. It can be even slower if you use some
+  old fonts like Menlo for Powerline.) I recently switched to
+  [powerlevel10k](https://github.com/romkatv/powerlevel10k) which covers pretty
+  much everything I need from agnoster, but more powerful and also way faster.
 
 ### Configure A Terminal Emulator
 
@@ -182,13 +205,17 @@ need powerline fonts, customized color scheme, etc, do the part.
   family directly crash the terminal and some fonts like Meslo do nothing and
   the terminal fall back to the default.
 
-  As I tested, Menlo and Ubuntu Mono Nerd font work. Install
-  [Menlo for Powerline](https://github.com/abertsch/Menlo-for-Powerline/blob/master/Menlo%20for%20Powerline.ttf)
+  As I tested, all the nerds font should work and the powerline symbols are
+  included,too, so I switched to a nerd font, namely, Meslo Nerd Font, as my
+  current zsh theme is
+  [powerlevel10k](https://github.com/romkatv/powerlevel10k)
+  now. Install
+  [Meslo Nerd Font](https://github.com/romkatv/powerlevel10k#recommended-meslo-nerd-font-patched-for-powerlevel10k)
   on Windows. Change the `fontFace` in the profile part. You might want to
   change the `fontSize` as well.
 
   ```json
-  "fontFace" : "Menlo for Powerline",
+  "fontFace" : "MesloLGS NF",
   "fontSize" : 14
   ```
 
