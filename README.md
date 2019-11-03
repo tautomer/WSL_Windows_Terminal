@@ -23,6 +23,8 @@
         - [For WSL 2](#for-wsl-2)
 - [Optional Configurations](#optional-configurations)
   - [Run VcXsrv First When Launching Windows Terminal](#run-vcxsrv-first-when-launching-windows-terminal)
+    - [Launch VcXsrv inside WSL](#launch-vcxsrv-inside-wsl)
+    - [With A vbs Script](#with-a-vbs-script)
   - [Get Correct Unix Permission for NTFS](#get-correct-unix-permission-for-ntfs)
   - [Configure OpenSSH Server on Windows](#configure-openssh-server-on-windows)
   - [Enable X11 Forwarding for SSH](#enable-x11-forwarding-for-ssh)
@@ -488,8 +490,35 @@ may not be useful to you, so I list them in 'optional' part. Here is the list.
 
 I'm using `Gnuplot` a lot which relies on X display and lazy to launch VcXsrv
 manually. If you are using the [Terminator way](#use-terminator), VcXsrv is
-always launched first with the VB script. Now we can use the same logic to
-check and launch VcXsrv and then launch WSL in the Windows Terminal.
+always launched first with the VB script. To do the same thing for the Windows
+Terminal, I have found two ways.
+
+#### Launch VcXsrv inside WSL
+
+There is no doubt that you can run `vcxsrv.exe` in WSL easily, but unlikely
+running it in `cmd`, doing this in WSL will keep your terminal occupied by the
+command as the output unless you terminate it.
+
+To overcome this problem, I'm using Python's `subprocess`.
+
+```python
+python -c 'import subprocess as sp; p=sp.Popen(["/mnt/c/Program Files/VcXsrv/vcxsrv.exe", ":0", "-ac", "-terminate", "-lesspointer", "-multiwindow", "-clipboard", "-wgl", "-silent-dup-error"])' 2>/dev/null
+```
+
+You can use either Python 2 or Python 3, but I think Python is always there, so
+for safety and compatibility, Python 2 is used here, though I only write Python
+3 codes. `-silent-dup-error` argument will suppress the duplicated display
+error, so that we don't have to check if VcXsrv is already running or not. (If
+you really want to do this, `tasklist.exe` is the way to go.) `2>/dev/null`
+will silent any other messages, so we will have a fresh terminal.
+
+Add this line to your dot files, like `.profile`, `.bashrc`, `.bash_profile`,
+`.zshrc`, etc. Now you don't have to manually launch VcXsrv any more.
+
+#### With A vbs Script
+
+Apparently we can use the same logic used for Terminator to check and launch
+VcXsrv and then launch WSL in the Windows Terminal.
 
 I'm going to change the script a little bit
 
