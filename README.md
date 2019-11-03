@@ -199,6 +199,21 @@ the `profiles` section.
 This is the minimal change you need to make to the json file to use WSL. If you
 need powerline fonts, customized color scheme, etc, do the part.
 
+- Replace `closeTab` shortcut if you are a `vim` user.
+  
+  By default, `ctrl+w` will close the current tab, which means when you use
+  split screen function in vim, you will have problem in switching the windows.
+  You should set this shortcut to something else. For example, I changed it to
+  `ctrl+alt+w`.
+
+  ```json
+  "command" : "closeTab",
+  "keys" :
+  [
+      "ctrl+alt+w"
+  ]
+  ```
+
 - For powerline fonts.
 
   Currently (as of v0.5.2762.0), some powerline fonts like the Droid Sans Mono
